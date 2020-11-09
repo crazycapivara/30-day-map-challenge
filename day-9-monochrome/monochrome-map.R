@@ -8,6 +8,7 @@ library(mapboxer)
 #nta_sf <- st_read("data/NeighborhoodTabulationAreas-NTA.geojson")
 #nta_pop <- data.table::fread("data/New_York_City_Population_By_Neighborhood_Tabulation_Areas.csv") %>%
 
+# Prepare data
 nta_sf <- st_read("https://data.cityofnewyork.us/api/geospatial/cpf4-rkhq?method=export&format=GeoJSON")
 nta_pop <- data.table::fread("https://data.cityofnewyork.us/api/views/swpk-hqdp/rows.csv") %>%
   dplyr::filter(Year == 2010) %>%
@@ -17,6 +18,7 @@ nta_sf %<>%
   dplyr::left_join(nta_pop, by = c("ntacode")) %>%
   dplyr::mutate(color = scales::col_quantile(c("#c2c2a3", "#d6d6c2"), pop)(pop))
 
+# Create viz
 mapboxer(
   bounds = st_bbox(nta_sf)
   #, style = basemap_background_style("#c2c2a3")
@@ -25,10 +27,7 @@ mapboxer(
   , width = 1000
   , height = 600
 ) %>%
-  set_paint_property("water", "fill_color"
-                     #, "#b0aca0"
-                     , "#878778"
-                     ) %>%
+  set_paint_property("water", "fill_color", "#878778") %>%
   add_source(as_mapbox_source(nta_sf), "nta") %>%
   add_fill_extrusion_layer(
     id = "nta",
