@@ -6,8 +6,9 @@ library(sf)
 library(mapboxer)
 
 #nta_sf <- st_read("data/NeighborhoodTabulationAreas-NTA.geojson")
-nta_sf <- st_read("https://data.cityofnewyork.us/api/geospatial/cpf4-rkhq?method=export&format=GeoJSON")
 #nta_pop <- data.table::fread("data/New_York_City_Population_By_Neighborhood_Tabulation_Areas.csv") %>%
+
+nta_sf <- st_read("https://data.cityofnewyork.us/api/geospatial/cpf4-rkhq?method=export&format=GeoJSON")
 nta_pop <- data.table::fread("https://data.cityofnewyork.us/api/views/swpk-hqdp/rows.csv") %>%
   dplyr::filter(Year == 2010) %>%
   dplyr::select(ntacode = "NTA Code", pop = Population)
