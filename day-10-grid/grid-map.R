@@ -6,7 +6,7 @@ library(mapboxer)
 library(h3)
 
 # Fetch data
-uk_accidents19 <- stats19::get_stats19(2019)
+#uk_accidents19 <- stats19::get_stats19(2019)
 
 # Convert to class 'sf' without loading 'sf' pkg
 uk_accidents19_sf <- uk_accidents19 %>%
@@ -15,13 +15,14 @@ uk_accidents19_sf <- uk_accidents19 %>%
 
 # Create hexagons
 H3_RESOLUTION <- 4
+PALETTE <- wesanderson::wes_palettes$Zissou1
 
 h3_hexagons_sf <- geo_to_h3(uk_accidents19_sf, res = H3_RESOLUTION) %>%
   tibble::tibble(index = .) %>%
   dplyr::count(index) %>%
   dplyr::mutate(
     geometry = h3_to_geo_boundary_sf(index)$geometry,
-    color = scales::col_quantile("YlOrRd", n)(n)
+    color = scales::col_quantile(PALETTE, n)(n)
   ) %>%
   sf::st_as_sf()
 
