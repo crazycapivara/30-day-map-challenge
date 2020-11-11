@@ -52,7 +52,7 @@ mapboxer(
   width = 1000,
   height = 600
 ) %>%
-  set_paint_property("water", "fill-color", "blue") %>%
+  #set_paint_property("water", "fill-color", "blue") %>%
   add_source(as_mapbox_source(hexagons_sf), "hexagons") %>%
   add_fill_extrusion_layer(
     id = "extruded-hexagons",
