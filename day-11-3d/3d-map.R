@@ -28,6 +28,7 @@ point_cloud_df <- data.table::fread(query) %>%
   dplyr::mutate(time = time/1000/60)
 
 #data.table::fwrite(point_cloud_df, "data/graphhopper-point-cloud-berlin.csv", sep = ";")
+#point_cloud_df <- data.table::fread("data/graphhopper-point-cloud-berlin.csv")
 
 # Prepare data
 hexagons_sf <- point_cloud_df %>%
