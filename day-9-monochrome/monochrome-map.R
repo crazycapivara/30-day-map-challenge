@@ -1,6 +1,7 @@
 # Polygons: "https://data.cityofnewyork.us/City-Government/Neighborhood-Tabulation-Areas-NTA-/cpf4-rkhq"
 # Pop: "https://data.cityofnewyork.us/City-Government/New-York-City-Population-By-Neighborhood-Tabulatio/swpk-hqdp"
 
+#remotes::install_github("crazycapivara/mapboxer", ref = "develop")
 library(magrittr)
 library(sf)
 library(mapboxer)
