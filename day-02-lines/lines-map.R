@@ -15,8 +15,11 @@ points <- data.table::fread("data/graphhopper-point-cloud-berlin.csv") %>%
   ) %>%
   tibble::as_tibble()
 
+### Use deckgl layer
+
 points$col_rgb <- lapply(points$color, function(x) as.list(col2rgb(x)))
 
+# Create viz
 mapboxer(
   center = c(13.404694, 52.521235),
   zoom = 12,
@@ -30,4 +33,28 @@ mapboxer(
     getSourcePosition = "@=[ {{prev_longitude}}, {{prev_latitude}} ]",
     getTargetPosition = "@=[ {{longitude}}, {{latitude}} ]",
     getColor = htmlwidgets::JS("d => d.col_rgb")
+  )
+
+### Use mapbox layer
+
+# Prepare line features
+build_line <- function(row) {
+  matrix(unlist(row), ncol = 2, byrow = TRUE) %>%
+    sf::st_linestring()
+}
+
+lines_sf <- lapply(1:nrow(points), function(i) build_line(points[i, 1:4])) %>%
+  sf::st_sfc(crs = 4326) %>%
+  sf::st_sf()
+lines_sf$color <- points$color
+
+# Create viz
+mapboxer(
+  bounds = sf::st_bbox(lines_sf),
+  pitch = 40
+) %>%
+  add_line_layer(
+    source = as_mapbox_source(lines_sf),
+    line_color = c("get", "color"),
+    line_width = 3
   )
